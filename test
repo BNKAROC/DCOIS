@@ -1,0 +1,7 @@
+# test.py
+import smbus3
+
+print("smbus3 已成功导入！")
+
+bus = smbus3.SMBus(1)  # I2C-1 是树莓派的默认总线
+print("I2C 总线已打开：", bus)
