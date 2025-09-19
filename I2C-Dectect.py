@@ -1,25 +1,22 @@
-from smbus3 import SMBus, i2c_msg
+from smbus3 import SMBus
 import time
 
-# 使用 I2C 总线号 1（大多数树莓派的默认设置）
-bus = SMBus(1)
-
-# I2C 地址的范围通常是 0x03 到 0x77
-def scan_i2c_bus():
-    print("正在扫描 I2C 总线...")
+def scan_i2c_bus(bus_id=1):
+    print(f"正在扫描 I2C 总线 {bus_id} ...")
     devices = []
-    for address in range(0x03, 0x78):
-        try:
-            # 尝试向设备发送空消息，若无异常，则该地址存在从机
-            bus.write_quick(address)
-            devices.append(hex(address))
-        except OSError:
-            # 如果抛出 OSError 说明该地址没有设备
-            pass
+    with SMBus(bus_id) as bus:
+        for address in range(0x03, 0x78):
+            try:
+                bus.read_byte(address)  # 比 write_quick 更兼容
+                devices.append(hex(address))
+            except OSError:
+                pass
+
+        bus.close()
     return devices
 
 if __name__ == "__main__":
-    detected_devices = scan_i2c_bus()
+    detected_devices = scan_i2c_bus(0)  # Pi 5 默认 I2C0
     if detected_devices:
         print(f"检测到的 I2C 设备地址: {', '.join(detected_devices)}")
     else:

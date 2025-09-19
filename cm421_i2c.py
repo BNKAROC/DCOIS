@@ -465,5 +465,5 @@ def process_hex_content(content):
 # a=cm421_read_resistance()
 # print(a)
 # close_bus()
-A=I2C_A16V8_read_byte(0X6F,0xF924)
-print(A)
+# A=I2C_A16V8_read_byte(0X6F,0xF924)
+# print(A)

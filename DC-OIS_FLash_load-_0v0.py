@@ -1,10 +1,11 @@
 import struct
 import datetime
-import flash_load
+import flash_load_0v0 as flash_load
 import AW86008
 import time
 from smbus3 import SMBus, i2c_msg
-import FIT
+import FIT_1v1 as FIT
+#v0.0 old checksum method added weight for <100mm focal length
 
 # 移除错误的导入语句，添加正确的 openpyxl 导入
 # try:
@@ -35,10 +36,10 @@ import FIT
 # # ...existing code...
 # # 读取数据进行验证
 # time.sleep(0.1)
-file_path = r"/home/OISAE/Desktop/BNKA/dcois/ASKP/ASKP-64.txt"
+file_path = r"/home/OISAE/Desktop/BNKA/dcois/ASKP/DH-0918.txt"
 coefficients = FIT.fit_coefficients(file_path)
 # print("拟合系数:", coefficients)
-dataload=flash_load.generate_dataload(0x01, 0x02, coefficients)
+dataload=flash_load.generate_dataload(0x01, 0x01, coefficients)
 print("数据加载:", dataload)
 print("16进制格式输出:", ",".join([f"0x{byte:02X}" for byte in dataload]))
 time.sleep(0.1)

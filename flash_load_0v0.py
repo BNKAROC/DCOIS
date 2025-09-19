@@ -31,7 +31,12 @@ def get_current_date_hex_list():
     hex_list = [year >> 8, year & 0xFF, month, day]
     return [int(f'0x{val:02X}', 16) for val in hex_list]
 def check_sum(data):
-    total = sum(data) & 0xFFFFFFFF
+    # data 共38字节，去掉前2字节，后面每4字节组成一个数
+    nums = []
+    for i in range(2, 38, 4):
+        num = (data[i] << 24) | (data[i+1] << 16) | (data[i+2] << 8) | data[i+3]
+        nums.append(num)
+    total = sum(nums) & 0xFFFFFFFF
     return [
         (total >> 24) & 0xFF,
         (total >> 16) & 0xFF,
